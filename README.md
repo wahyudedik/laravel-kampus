@@ -26,9 +26,9 @@
 - List pembayaran - DONE
 
 ### Dashboard Dosen
-- List perangkat ajar
-- Input perangkat ajar (upload file)
-- Detail perangkat ajar
+- List perangkat ajar - DONE    
+- Input perangkat ajar (upload file) - DONE
+- Detail perangkat ajar - DONE
 
 ## Teknologi
 - Laravel
