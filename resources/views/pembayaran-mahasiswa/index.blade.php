@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('menus', 'Manajemen Data User')
-@section('page-title', 'Data User')
-@section('page-subtitle', 'Manajemen data user')
+@section('menus', 'Manajemen Data Pembayaran Mahasiswa')
+@section('page-title', 'Data Pembayaran Mahasiswa')
+@section('page-subtitle', 'Manajemen data pembayaran mahasiswa')
 @section('page-actions')
     <div class="btn-list">
-        <a href="{{ route('users.create') }}" class="btn btn-primary d-none d-sm-inline-block">
-            <i class="ti ti-plus"></i> Tambah User
+        <a href="{{ route('pembayaran-mahasiswa.create') }}" class="btn btn-primary d-none d-sm-inline-block">
+            <i class="ti ti-plus"></i> Tambah Pembayaran
         </a>
     </div>
 @endsection
@@ -24,32 +24,45 @@
                 <table class="table table-vcenter card-table">
                     <thead>
                         <tr>
-                            <th class="sortable" data-sort="name">Nama</th>
-                            <th class="sortable" data-sort="email">Email</th>
-                            <th class="sortable" data-sort="usertype">Usertype</th>
+                            <th class="sortable" data-sort="nama">Nama Mahasiswa</th>
+                            <th class="sortable" data-sort="nim">NIM</th>
+                            <th class="sortable" data-sort="jenis">Jenis Pembayaran</th>
+                            <th class="sortable" data-sort="tanggal">Tanggal Pembayaran</th>
+                            <th class="sortable" data-sort="jumlah">Jumlah Pembayaran</th>
+                            <th class="sortable" data-sort="status">Status</th>
+                            <th class="sortable" dtha-sort="bukti">Bukti Pembayaran</th>
                             <th class="w-1"></th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
-                        @foreach ($users as $user)
+                        @foreach ($pembayaranMahasiswas as $pembayaranMahasiswa)
                             <tr>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->usertype }}</td>
+                                <td>{{ $pembayaranMahasiswa->nama_mahasiswa }}</td>
+                                <td>{{ $pembayaranMahasiswa->nim }}</td>
+                                <td>{{ $pembayaranMahasiswa->jenis_pembayaran }}</td>
+                                <td>{{ $pembayaranMahasiswa->tanggal_pembayaran->format('d/m/Y') }}</td>
+                                <td>{{ number_format($pembayaranMahasiswa->jumlah_pembayaran, 2) }}</td>
+                                <td class="{{ $pembayaranMahasiswa->status_pembayaran ? 'text-success' : 'text-danger' }}">
+                                    {{ $pembayaranMahasiswa->status_pembayaran ? 'Terbayar' : 'Belum Terbayar' }}</td>
+                                <td><a href="{{ asset('bukti_pembayaran/' . $pembayaranMahasiswa->bukti_pembayaran) }}"
+                                        target="_blank">{{ $pembayaranMahasiswa->bukti_pembayaran }}</a></td>
                                 <td>
                                     <div class="btn-list flex-nowrap">
-                                        <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-secondary no-submit-handling">
+                                        <a href="{{ route('pembayaran-mahasiswa.show', $pembayaranMahasiswa->id) }}"
+                                            class="btn btn-sm btn-secondary no-submit-handling">
                                             Detail
                                         </a>
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary no-submit-handling">
+                                        <a href="{{ route('pembayaran-mahasiswa.edit', $pembayaranMahasiswa->id) }}"
+                                            class="btn btn-sm btn-primary no-submit-handling">
                                             Edit
                                         </a>
-                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                            class="d-inline">
+                                        <form
+                                            action="{{ route('pembayaran-mahasiswa.destroy', $pembayaranMahasiswa->id) }}"
+                                            method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger delete-confirm"
-                                                data-name="{{ $user->name }}">
+                                                data-name="{{ $pembayaranMahasiswa->nama_mahasiswa }}">
                                                 Delete
                                             </button>
                                         </form>
@@ -61,7 +74,7 @@
                 </table>
             </div>
             <div class="mt-3">
-                {{ $users->links('vendor.pagination.bootstrap-5') }}
+                {{ $pembayaranMahasiswas->links('vendor.pagination.bootstrap-5') }}
             </div>
         </div>
     </div>

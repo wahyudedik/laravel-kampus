@@ -27,7 +27,7 @@
                             </span>
                         </div>
                         <h4>{{ $user->name }}</h4>
-                        <span class="badge bg-{{ $user->usertype == 'admin' ? 'danger' : ($user->usertype == 'dosen' ? 'info' : 'success') }}">
+                        <span class="badge bg-{{ $user->usertype == 'admin' ? 'danger text-white' : ($user->usertype == 'dosen' ? 'info text-white' : 'success text-white') }}">
                             {{ ucfirst($user->usertype) }}
                         </span>
                     </div>
@@ -48,10 +48,10 @@
                                     <td class="text-muted">Status Email</td>
                                     <td>
                                         @if($user->email_verified_at)
-                                            <span class="badge bg-success">Terverifikasi</span>
+                                            <span class="badge bg-success text-white">Terverifikasi</span>
                                             <small class="text-muted ms-2">pada {{ $user->email_verified_at->format('d M Y H:i') }}</small>
                                         @else
-                                            <span class="badge bg-warning">Belum Terverifikasi</span>
+                                            <span class="badge bg-warning text-white">Belum Terverifikasi</span>
                                         @endif
                                     </td>
                                 </tr>

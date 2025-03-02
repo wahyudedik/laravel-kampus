@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel Kampus') }}</title>
     <link rel="icon" href="{{ asset('icon/icon.svg') }}" type="image/svg+xml">
+    <!-- In your <head> section -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Tabler Core CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.1.1/dist/css/tabler.min.css" />
     <!-- Tabler Icons -->
@@ -79,7 +81,7 @@
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <i class="ti ti-user-shield"></i>
                                     </span>
-                                    <span class="nav-link-title">Admin</span>
+                                    <span class="nav-link-title">Users</span>
                                 </a>
                                 <div class="dropdown-menu {{ request()->routeIs('users.*') ? 'show' : '' }}">
                                     <a class="dropdown-item {{ request()->routeIs('users.*') ? 'active' : '' }}"
@@ -87,13 +89,35 @@
                                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                                             <i class="ti ti-users"></i>
                                         </span>
-                                        Manajemen Users
+                                        Data Users
+                                    </a>
+                                </div>
+                            </li>
+                            <li
+                                class="nav-item dropdown {{ request()->routeIs('pembayaran-mahasiswa.*') ? 'show' : '' }}">
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('pembayaran-mahasiswa.*') ? 'active' : '' }}"
+                                    href="#navbar-admin" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                                    role="button"
+                                    aria-expanded="{{ request()->routeIs('pembayaran-mahasiswa.*') ? 'true' : 'false' }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-list"></i>
+                                    </span>
+                                    <span class="nav-link-title">Pembayaran</span>
+                                </a>
+                                <div
+                                    class="dropdown-menu {{ request()->routeIs('pembayaran-mahasiswa.*') ? 'show' : '' }}">
+                                    <a class="dropdown-item {{ request()->routeIs('pembayaran-mahasiswa.*') ? 'active' : '' }}"
+                                        href="{{ route('pembayaran-mahasiswa.index') }}">
+                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <i class="ti ti-list"></i>
+                                        </span>
+                                        Data Pembayaran
                                     </a>
                                 </div>
                             </li>
                         @endif
 
-                        {{-- @if (auth()->user()->role === 'mahasiswa')
+                        @if (Auth::user()->usertype == 'mahasiswa')
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-link-custom text-white" href="#navbar-mahasiswa"
                                     data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
@@ -104,19 +128,19 @@
                                     <span class="nav-link-title">Mahasiswa</span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('mahasiswa.payments.create') }}">
+                                    <a class="dropdown-item" href="{{ route('mahasiswa.create') }}">
                                         <i class="ti ti-plus me-1"></i>
-                                        Input Pembayaran
+                                        Input Pembayaran Mahasiswa
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('mahasiswa.payments.index') }}">
+                                    <a class="dropdown-item" href="{{ route('mahasiswa.index') }}">
                                         <i class="ti ti-list me-1"></i>
-                                        List Pembayaran
+                                        List Pembayaran Mahasiswa
                                     </a>
                                 </div>
                             </li>
                         @endif
 
-                        @if (auth()->user()->role === 'dosen')
+                        @if (Auth::user()->usertype == 'dosen')
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle nav-link-custom text-white" href="#navbar-dosen"
                                     data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
@@ -127,19 +151,19 @@
                                     <span class="nav-link-title">Dosen</span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('dosen.materials.index') }}">
+                                    <a class="dropdown-item" href="{{ route('dosen.index') }}">
                                         <i class="ti ti-list me-1"></i>
                                         Perangkat Ajar
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('dosen.materials.create') }}">
+                                    <a class="dropdown-item" href="{{ route('dosen.create') }}">
                                         <i class="ti ti-upload me-1"></i>
                                         Upload Perangkat Ajar
                                     </a>
                                 </div>
                             </li>
-                        @endif --}}
+                        @endif
 
-                        <li class="nav-item">
+                        <li class="nav-item {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
                             <a class="nav-link nav-link-custom text-white" href="{{ route('profile.edit') }}">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <i class="ti ti-user-circle"></i>
@@ -233,7 +257,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="{{ route('dashboard') }}">Home</a>
+                                        <a href="#">Home</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">
                                         @yield('page-subtitle', 'Selamat datang di Aplikasi Kampus')

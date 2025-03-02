@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('menus', 'Selamat Datang' . ' ' . Auth::user()->name)
 @section('page-title', 'Dashboard Admin')
 @section('page-subtitle', 'Ringkasan data dan statistik sistem')
 
@@ -108,20 +108,85 @@
         <!-- Chart Card -->
         <div class="col-lg-8">
             <div class="card card-hover">
-                <div class="card-header">
-                    <h3 class="card-title">Grafik Pembayaran</h3>
+                <div class="card-header d-flex justify-content-between">
+                    <h3 class="card-title">Ringkasan Pembayaran</h3>
+                    <span class="badge bg-primary text-white">Total: Rp {{ number_format($totalPayments ?? 0, 0, ',', '.') }}</span>
                 </div>
                 <div class="card-body">
-                    <div id="chart-payments" style="height: 300px;"></div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card card-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="col-auto">
+                                            <span class="bg-yellow text-white avatar">
+                                                <i class="ti ti-report-money"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ms-3">
+                                            <div class="text-muted">Total Pembayaran Sukses</div>
+                                            <div class="text-heading font-weight-bold">Rp
+                                                {{ number_format($totalPayments ?? 0, 0, ',', '.') }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="col-auto">
+                                            <span class="bg-green text-white avatar">
+                                                <i class="ti ti-calendar-plus"></i>
+                                            </span>
+                                        </div>
+                                        <div class="ms-3">
+                                            <div class="text-muted">Pembayaran Hari Ini</div>
+                                            <div class="text-heading font-weight-bold">{{ $newPayments ?? 0 }} transaksi
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simple visual representation of payment data -->
+                    <div class="mt-4">
+                        <h4 class="mb-3">5 Pembayaran Terbaru</h4>
+                        @forelse($latestPayments ?? [] as $payment)
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <strong>{{ $payment->nama_mahasiswa }}</strong>
+                                    <span>Rp {{ number_format($payment->jumlah_pembayaran ?? 0, 0, ',', '.') }}</span>
+                                </div>
+                                <div class="progress" style="height: 25px;">
+                                    <div class="progress-bar {{ $payment->status_pembayaran ? 'bg-success' : 'bg-warning' }}"
+                                        role="progressbar"
+                                        style="width: {{ min(100, ($payment->jumlah_pembayaran / max(1, $totalPayments)) * 100 * 5) }}%"
+                                        aria-valuenow="{{ $payment->jumlah_pembayaran }}" aria-valuemin="0"
+                                        aria-valuemax="{{ $totalPayments }}">
+                                        {{ $payment->jenis_pembayaran }}
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="text-center text-muted py-4">
+                                Belum ada data pembayaran
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Recent Activity -->
         <div class="col-lg-4">
             <div class="card card-hover">
                 <div class="card-header">
-                    <h3 class="card-title">Aktivitas Terbaru</h3>
+                    <h3 class="card-title">Aktivitas Login Terbaru</h3>
                 </div>
                 <div class="card-body">
                     <div class="divide-y">
@@ -129,20 +194,22 @@
                             <div>
                                 <div class="row">
                                     <div class="col-auto">
-                                        <span class="avatar">{{ substr($activity->user->name ?? 'User', 0, 1) }}</span>
+                                        <span class="avatar">{{ substr($activity->name ?? 'User', 0, 1) }}</span>
                                     </div>
                                     <div class="col">
                                         <div class="text-truncate">
-                                            {{ $activity->description ?? 'Activity description' }}
+                                            <strong>{{ $activity->name }}</strong> login ke sistem
                                         </div>
-                                        <div class="text-muted">{{ $activity->created_at ?? now()->diffForHumans() }}</div>
+                                        <div class="text-muted">
+                                            {{ \Carbon\Carbon::createFromTimestamp($activity->last_activity)->diffForHumans() }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         @empty
                             <div class="text-center text-muted py-4">
                                 <i class="ti ti-mood-empty d-block mb-2" style="font-size: 2rem;"></i>
-                                Belum ada aktivitas terbaru
+                                Belum ada aktivitas login terbaru
                             </div>
                         @endforelse
                     </div>
@@ -156,7 +223,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Pembayaran Terbaru</h3>
                     <div class="card-actions">
-                        <a href="#" class="btn btn-sm btn-primary">
+                        <a href="{{ route('pembayaran-mahasiswa.index') }}" class="btn btn-sm btn-primary">
                             Lihat Semua
                         </a>
                     </div>
@@ -165,32 +232,32 @@
                     <table class="table table-vcenter card-table">
                         <thead>
                             <tr>
-                                <th>Mahasiswa</th>
+                                <th>Nama Mahasiswa</th>
+                                <th>NIM</th>
                                 <th>Jenis Pembayaran</th>
-                                <th>Jumlah</th>
-                                <th>Tanggal</th>
+                                <th>Tanggal Pembayaran</th>
+                                <th>Jumlah Pembayaran</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <th class="w-1"></th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($latestPayments ?? [] as $payment)
                                 <tr>
-                                    <td>{{ $payment->student->name ?? 'Nama Mahasiswa' }}</td>
-                                    <td>{{ $payment->type ?? 'Jenis Pembayaran' }}</td>
-                                    <td>Rp {{ number_format($payment->amount ?? 0, 0, ',', '.') }}</td>
-                                    <td>{{ $payment->created_at ?? now()->format('d M Y') }}</td>
+                                    <td>{{ $payment->nama_mahasiswa ?? 'Nama Mahasiswa' }}</td>
+                                    <td>{{ $payment->nim ?? 'NIM' }}</td>
+                                    <td>{{ $payment->jenis_pembayaran ?? 'Jenis Pembayaran' }}</td>
+                                    <td>Rp {{ number_format($payment->jumlah_pembayaran ?? 0, 0, ',', '.') }}</td>
+                                    <td>{{ $payment->tanggal_pembayaran->format('d M Y') }}</td>
                                     <td>
-                                        @if (($payment->status ?? 'pending') === 'approved')
-                                            <span class="badge bg-success">Disetujui</span>
-                                        @elseif(($payment->status ?? 'pending') === 'rejected')
-                                            <span class="badge bg-danger">Ditolak</span>
+                                        @if ($payment->status_pembayaran ?? false)
+                                            <span class="badge bg-success text-white">Terbayar</span>
                                         @else
-                                            <span class="badge bg-warning">Pending</span>
+                                            <span class="badge bg-warning text-white">Belum Terbayar</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.payments.show', $payment->id ?? 1) }}"
+                                        <a href="{{ route('pembayaran-mahasiswa.show', $payment->id ?? 1) }}"
                                             class="btn btn-sm btn-primary">Detail</a>
                                     </td>
                                 </tr>
@@ -212,50 +279,75 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Sample data for chart
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const sampleData = [30, 45, 32, 70, 40, 60, 80, 65, 55, 70, 60, 80];
+            // Debug - check if chart container exists
+            const chartContainer = document.getElementById('chart-payments');
+            if (!chartContainer) {
+                console.error('Chart container not found!');
+                return;
+            }
 
-            // Initialize payments chart
-            const ctx = document.getElementById('chart-payments');
-            if (ctx) {
-                new Chart(ctx, {
-                    type: 'line',
+            // Debug - check if Chart.js is loaded
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js is not loaded!');
+                return;
+            }
+
+            try {
+                // Get payments data safely
+                const paymentsData = {!! json_encode($latestPayments ?? []) !!};
+                console.log('Payment data:', paymentsData);
+
+                if (!paymentsData || !paymentsData.length) {
+                    // No data, show placeholder
+                    chartContainer.innerHTML =
+                        '<div class="text-center text-muted py-5">Tidak ada data pembayaran untuk ditampilkan</div>';
+                    return;
+                }
+
+                // Process data for chart
+                const labels = paymentsData.map(p => p.nama_mahasiswa || 'Unknown');
+                const amounts = paymentsData.map(p => p.jumlah_pembayaran || 0);
+                const statusColors = paymentsData.map(p => p.status_pembayaran ? 'rgba(5, 150, 105, 0.6)' :
+                    'rgba(245, 158, 11, 0.6)');
+                const borderColors = paymentsData.map(p => p.status_pembayaran ? 'rgb(5, 150, 105)' :
+                    'rgb(245, 158, 11)');
+
+                // Create chart
+                new Chart(chartContainer, {
+                    type: 'bar',
                     data: {
-                        labels: months,
+                        labels: labels,
                         datasets: [{
-                            label: 'Pembayaran Bulanan',
-                            tension: 0.3,
-                            data: sampleData,
-                            borderColor: '#206bc4',
-                            backgroundColor: 'rgba(32, 107, 196, 0.1)',
-                            borderWidth: 2,
-                            fill: true
+                            label: 'Jumlah Pembayaran',
+                            data: amounts,
+                            backgroundColor: statusColors,
+                            borderColor: borderColors,
+                            borderWidth: 1
                         }]
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                display: false,
+                                display: false
                             }
                         },
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                grid: {
-                                    display: true,
-                                    color: 'rgba(0, 0, 0, 0.05)'
-                                }
-                            },
-                            x: {
-                                grid: {
-                                    display: false
+                                ticks: {
+                                    callback: function(value) {
+                                        return 'Rp ' + value.toLocaleString('id-ID');
+                                    }
                                 }
                             }
                         }
                     }
                 });
+            } catch (error) {
+                console.error('Error creating chart:', error);
+                chartContainer.innerHTML = '<div class="text-center text-danger py-5">Error creating chart</div>';
             }
         });
     </script>

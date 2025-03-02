@@ -7,9 +7,6 @@
         <a href="{{ route('users.index') }}" class="btn btn-primary d-none d-sm-inline-block">
             <i class="ti ti-arrow-left"></i> Kembali
         </a>
-        <a href="{{ route('users.index') }}" class="btn btn-primary d-sm-none">
-            <i class="ti ti-arrow-left"></i>
-        </a>
     </div>
 @endsection
 @section('content')

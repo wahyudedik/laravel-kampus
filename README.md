@@ -8,13 +8,22 @@
 - Sistem autentikasi pengguna - DONE
 
 ### Dashboard Admin
-- CRUD User
-- Detail pembayaran mahasiswa
+- CRUD User - DONE
+- Detail pembayaran mahasiswa - DONE
+    - id
+    - user_id
+    - nama_mahasiswa
+    - nim
+    - jenis_pembayaran
+    - tanggal_pembayaran
+    - jumlah_pembayaran
+    - bukti_pembayaran
+    - status_pembayaran
 
 ### Dashboard Mahasiswa
-- Input pembayaran
-- Detail pembayaran
-- List pembayaran
+- Input pembayaran - DONE
+- Detail pembayaran - DONE
+- List pembayaran - DONE
 
 ### Dashboard Dosen
 - List perangkat ajar
@@ -22,7 +31,8 @@
 - Detail perangkat ajar
 
 ## Teknologi
-- [Teknologi yang digunakan]
+- Laravel
+- Bootstrap
 
 ## Instalasi
 1. Clone repository
