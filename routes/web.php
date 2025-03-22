@@ -1,14 +1,19 @@
 <?php
 
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 use App\Models\PembayaranMahasiswa;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DosenController;
 use Illuminate\Contracts\Session\Session;
+use App\Http\Controllers\MateriController;
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\MahasiswaMateriController;
 use App\Http\Controllers\PembayaranMahasiswaController;
 
 Route::get('/', function () {
@@ -48,6 +53,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->take(5)
             ->get();
 
+        // settings 
+        $settings = Setting::first();
 
         return view('dashboard', compact(
             'totalUsers',
@@ -59,7 +66,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'totalPayments',
             'newPayments',
             'latestPayments',
-            'recentActivities'
+            'recentActivities',
+            'settings'
         ));
     })->name('dashboard');
 
@@ -68,10 +76,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
+    // route untuk admin
     Route::resource('users', UserController::class);
     Route::resource('pembayaran-mahasiswa', PembayaranMahasiswaController::class);
+
+    // route untuk mahasiswa
     Route::resource('mahasiswa', MahasiswaController::class);
+    Route::get('mahasiswa-materi', [MahasiswaMateriController::class, 'index'])
+        ->name('mahasiswa.materi.index');
+    Route::get('mahasiswa-materi/{id}/download', [MahasiswaMateriController::class, 'download'])
+        ->name('mahasiswa.materi.download');
+
+
+    // Route untuk dosen
     Route::resource('dosen', DosenController::class);
+    Route::resource('materi', MateriController::class);
+    Route::resource('absensi', AbsensiController::class);
+    Route::get('absensi/{id}/export-pdf', [AbsensiController::class, 'exportPdf'])->name('absensi.export-pdf');
+    Route::get('absensi/{id}/export-excel', [AbsensiController::class, 'exportExcel'])->name('absensi.export-excel');
+
+    // route untuk admin setting
+    Route::get('settings', [SettingController::class, 'index'])->name('settings');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__ . '/auth.php';

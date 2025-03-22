@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Setting;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        
+        // Share settings with all views
+        View::composer('*', function ($view) {
+            $settings = Setting::first();
+            $view->with('settings', $settings);
+        });
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('menus', 'Manajemen Perangkat Aja')
-@section('page-title', 'Detail Perangkat Ajar')
-@section('page-subtitle', 'Informasi lengkap perangkat ajar')
+@section('menus', 'RPS Mata Kuliah')
+@section('page-title', 'Detail RPS Mata Kuliah')
+@section('page-subtitle', 'Informasi lengkap RPS Mata Kuliah')
 @section('page-actions')
     <div class="btn-list">
         <a href="{{ route('dosen.index') }}" class="btn btn-secondary d-none d-sm-inline-block">

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel Kampus') }}</title>
-    <link rel="icon" href="{{ asset('icon/icon.svg') }}" type="image/svg+xml">
+    <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $settings->icon_meta ?? 'icon/icon.svg') }}">
     <!-- In your <head> section -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Tabler Core CSS -->
@@ -57,9 +57,9 @@
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('icon/icon.svg') }}" width="150" height="50" alt="Tabler"
-                            class="navbar-brand-image">
-                        <span class="text-white">Kampus</span>
+                        <img src="{{ asset('storage/' . $settings->logo_dashboard ?? 'icon/icon.svg') }}" width="200"
+                            height="60" alt="Tabler" class="navbar-brand-image">
+                        <span class="text-white">{{ $settings->nama_logo_dashboard ?? 'KampusApp' }}</span>
                     </a>
                 </h1>
                 <div class="collapse navbar-collapse" id="navbar-menu">
@@ -118,46 +118,105 @@
                         @endif
 
                         @if (Auth::user()->usertype == 'mahasiswa')
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle nav-link-custom text-white" href="#navbar-mahasiswa"
-                                    data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
-                                    aria-expanded="false">
+                            <li class="nav-item dropdown {{ request()->routeIs('mahasiswa.*') ? 'show' : '' }}">
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('mahasiswa.*') ? 'active' : '' }}"
+                                    href="#navbar-mahasiswa" data-bs-toggle="dropdown" data-bs-auto-close="false"
+                                    role="button"
+                                    aria-expanded="{{ request()->routeIs('mahasiswa.*') ? 'true' : 'false' }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <i class="ti ti-school"></i>
                                     </span>
                                     <span class="nav-link-title">Mahasiswa</span>
                                 </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('mahasiswa.create') }}">
+                                <div class="dropdown-menu {{ request()->routeIs('mahasiswa.*') ? 'show' : '' }}">
+                                    <a class="dropdown-item {{ request()->routeIs('mahasiswa.create') ? 'active' : '' }}"
+                                        href="{{ route('mahasiswa.create') }}">
                                         <i class="ti ti-plus me-1"></i>
-                                        Input Pembayaran Mahasiswa
+                                        Input Pembayaran
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('mahasiswa.index') }}">
+                                    <a class="dropdown-item {{ request()->routeIs('mahasiswa.index') ? 'active' : '' }}"
+                                        href="{{ route('mahasiswa.index') }}">
                                         <i class="ti ti-list me-1"></i>
-                                        List Pembayaran Mahasiswa
+                                        List Pembayaran
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('mahasiswa.materi.*') ? 'active' : '' }}"
+                                        href="{{ route('mahasiswa.materi.index') }}">
+                                        <i class="ti ti-book me-1"></i>
+                                        Materi Perkuliahan
                                     </a>
                                 </div>
                             </li>
                         @endif
 
                         @if (Auth::user()->usertype == 'dosen')
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle nav-link-custom text-white" href="#navbar-dosen"
-                                    data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
-                                    aria-expanded="false">
+                            <li class="nav-item dropdown {{ request()->routeIs('dosen.*') ? 'show' : '' }}">
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('dosen.*') ? 'active' : '' }}"
+                                    href="#navbar-dosen" data-bs-toggle="dropdown" data-bs-auto-close="false"
+                                    role="button"
+                                    aria-expanded="{{ request()->routeIs('dosen.*') ? 'true' : 'false' }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <i class="ti ti-chalkboard"></i>
                                     </span>
                                     <span class="nav-link-title">Dosen</span>
                                 </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('dosen.index') }}">
+                                <div class="dropdown-menu {{ request()->routeIs('dosen.*') ? 'show' : '' }}">
+                                    <a class="dropdown-item {{ request()->routeIs('dosen.index') ? 'active' : '' }}"
+                                        href="{{ route('dosen.index') }}">
                                         <i class="ti ti-list me-1"></i>
-                                        Perangkat Ajar
+                                        RPS Mata Kuliah
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('dosen.create') }}">
+                                    <a class="dropdown-item {{ request()->routeIs('dosen.create') ? 'active' : '' }}"
+                                        href="{{ route('dosen.create') }}">
                                         <i class="ti ti-upload me-1"></i>
-                                        Upload Perangkat Ajar
+                                        Upload RPS Mata Kuliah
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown {{ request()->routeIs('materi.*') ? 'show' : '' }}">
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('materi.*') ? 'active' : '' }}"
+                                    href="#navbar-materi" data-bs-toggle="dropdown" data-bs-auto-close="false"
+                                    role="button"
+                                    aria-expanded="{{ request()->routeIs('materi.*') ? 'true' : 'false' }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-book"></i>
+                                    </span>
+                                    <span class="nav-link-title">Materi Ajar</span>
+                                </a>
+                                <div class="dropdown-menu {{ request()->routeIs('materi.*') ? 'show' : '' }}">
+                                    <a class="dropdown-item {{ request()->routeIs('materi.index') ? 'active' : '' }}"
+                                        href="{{ route('materi.index') }}">
+                                        <i class="ti ti-list me-1"></i>
+                                        List Materi Ajar
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('materi.create') ? 'active' : '' }}"
+                                        href="{{ route('materi.create') }}">
+                                        <i class="ti ti-upload me-1"></i>
+                                        Upload Materi Ajar
+                                    </a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown {{ request()->routeIs('absensi.*') ? 'show' : '' }}">
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('absensi.*') ? 'active' : '' }}"
+                                    href="#navbar-absensi" data-bs-toggle="dropdown" data-bs-auto-close="false"
+                                    role="button"
+                                    aria-expanded="{{ request()->routeIs('absensi.*') ? 'true' : 'false' }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-clipboard-check"></i>
+                                    </span>
+                                    <span class="nav-link-title">Absensi</span>
+                                </a>
+                                <div class="dropdown-menu {{ request()->routeIs('absensi.*') ? 'show' : '' }}">
+                                    <a class="dropdown-item {{ request()->routeIs('absensi.index') ? 'active' : '' }}"
+                                        href="{{ route('absensi.index') }}">
+                                        <i class="ti ti-list me-1"></i>
+                                        Daftar Absensi
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('absensi.create') ? 'active' : '' }}"
+                                        href="{{ route('absensi.create') }}">
+                                        <i class="ti ti-plus me-1"></i>
+                                        Buat Absensi Baru
                                     </a>
                                 </div>
                             </li>
@@ -217,6 +276,9 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                @if (auth()->user()->usertype === 'admin')
+                                    <a href="{{ route('settings') }}" class="dropdown-item">Settings</a>
+                                @endif
                                 <a href="{{ route('profile.edit') }}" class="dropdown-item">Profile</a>
                                 <div class="dropdown-divider"></div>
                                 <form method="POST" action="{{ route('logout') }}">

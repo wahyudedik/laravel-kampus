@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('menus', 'Manajemen Perangkat Ajar')
-@section('page-title', 'Data Perangkat Ajar')
-@section('page-subtitle', 'Manajemen perangkat ajar')
+@section('menus', 'Manajemen RPS Mata Kuliah')
+@section('page-title', 'Data RPS Mata Kuliah')
+@section('page-subtitle', 'Manajemen RPS mata kuliah')
 @section('page-actions')
     <div class="btn-list">
         <a href="{{ route('dosen.index') }}" class="btn btn-primary d-none d-sm-inline-block">
@@ -74,7 +74,8 @@
                             @enderror
                         </div>
                     </div>
-                </div> <button type="submit" class="btn btn-primary no-submit-handling">Simpan</button>
+                </div> 
+                <button type="submit" class="btn btn-primary no-submit-handling">Simpan</button>
             </form>
         </div>
     </div>
