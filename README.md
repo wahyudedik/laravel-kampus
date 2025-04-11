@@ -19,7 +19,7 @@
     - jumlah_pembayaran
     - bukti_pembayaran
     - status_pembayaran
-- Setting logo - Done
+    - Setting logo - Done
     - update logo - Done
 
 ### Dashboard Mahasiswa
