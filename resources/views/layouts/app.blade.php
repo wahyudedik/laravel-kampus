@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel Kampus') }}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $settings->icon_meta ?? 'icon/icon.svg') }}">
+    <link rel="icon" type="image/x-icon"
+        href="{{ asset(isset($settings->icon_meta) ? 'storage/' . $settings->icon_meta : 'icon/icon.svg') }}">
     <!-- In your <head> section -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Tabler Core CSS -->
@@ -57,8 +58,8 @@
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('storage/' . $settings->logo_dashboard ?? 'icon/icon.svg') }}" width="200"
-                            height="60" alt="Tabler" class="navbar-brand-image">
+                        <img src="{{ asset(isset($settings->logo_dashboard) ? 'storage/' . $settings->logo_dashboard : 'icon/icon.svg') }}"
+                            width="200" height="60" alt="Tabler" class="navbar-brand-image">
                         <span class="text-white">{{ $settings->nama_logo_dashboard ?? 'KampusApp' }}</span>
                     </a>
                 </h1>

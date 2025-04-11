@@ -1,1 +1,1 @@
-<img src="{{ asset('storage/' . $settings->logo_dashboard ?? 'icon/icon.svg') }}" {{ $attributes }} style="background: transparent;" />
+<img src="{{ asset(isset($settings->icon_login) ? 'storage/' . $settings->icon_login : 'icon/icon.svg') }}" {{ $attributes }} style="background: transparent;" />
