@@ -19,16 +19,42 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-        <div>
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
+    <div class="min-h-screen grid grid-cols-1 place-content-center justify-items-center gap-12 bg-gray-100 dark:bg-gray-900 p-4">
+        
+        <div class="w-full sm:max-w-md bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg px-6 py-4">
+            <div class="flex justify-center mb-6">
+                <a href="/">
+                    @if(isset($settings->icon_login))
+                        <img src="{{ asset('storage/'.$settings->icon_login) }}" class="h-20 w-auto object-contain">
+                    @else
+                        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    @endif
+                </a>
+            </div>
+            {{ $slot }}
         </div>
 
-        <div
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-            {{ $slot }}
+        <div class="w-full max-w-7xl grid grid-cols-3 gap-4 text-sm text-gray-600 dark:text-gray-400 px-8">
+            @if(isset($settings->ig_1))
+            <a href="#" class="flex items-center justify-center gap-3 hover:text-gray-900 dark:hover:text-gray-200 transition p-4">
+                <img src="{{ asset('storage/'.$settings->ig_1) }}" class="h-8 w-8 object-contain">
+                <span class="font-medium">{{ $settings->link_ig_1 }}</span>
+            </a>
+            @endif
+
+            @if(isset($settings->ig_2))
+            <a href="#" class="flex items-center justify-center gap-3 hover:text-gray-900 dark:hover:text-gray-200 transition p-4">
+                <img src="{{ asset('storage/'.$settings->ig_2) }}" class="h-8 w-8 object-contain">
+                <span class="font-medium">{{ $settings->link_ig_2 }}</span>
+            </a>
+            @endif
+            
+            @if(isset($settings->logo_website))
+            <a href="{{ $settings->link_website ?? '#' }}" target="_blank" class="flex items-center justify-center gap-3 hover:text-gray-900 dark:hover:text-gray-200 transition p-4">
+                <img src="{{ asset('storage/'.$settings->logo_website) }}" class="h-8 w-8 object-contain">
+                <span class="font-medium">{{ $settings->link_website }}</span>
+            </a>
+            @endif
         </div>
     </div>
 </body>

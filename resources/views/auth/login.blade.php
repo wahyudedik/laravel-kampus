@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <h1>Login</h1>
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Login</h1>
     <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
         {{ __('Sign in to your account to continue.') }}
     </div>

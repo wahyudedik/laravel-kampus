@@ -20,10 +20,10 @@ class PerangkatAjar extends Model
     ];
 
     protected $casts = [
-        'tahun_ajaran' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'user_id' => 'integer',
+        'tahun_ajaran' => 'string',
     ];
     
     public function user()

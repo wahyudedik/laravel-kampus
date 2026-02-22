@@ -31,7 +31,7 @@
                                     <p class="mb-1"><strong>Semester:</strong> {{ $dosen->semester }}</p>
                                     <p class="mb-1">
                                         <strong>Tahun Ajaran:</strong>
-                                        {{ $dosen->tahun_ajaran->format('Y') }}/{{ $dosen->tahun_ajaran->format('Y') + 1 }}
+                                        {{ $dosen->tahun_ajaran }}
                                     </p>
                                     <p class="mb-1"><strong>File:</strong> {{ $dosen->file_perangkat_ajar }}</p>
                                 </div>

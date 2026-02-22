@@ -74,8 +74,9 @@
                                     <span class="nav-link-title">Dashboard</span>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown {{ request()->routeIs('users.*') ? 'show' : '' }}">
-                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                            <li
+                                class="nav-item dropdown {{ request()->routeIs('users.*') || request()->routeIs('monitoring.rps') ? 'show' : '' }}">
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('users.*') || request()->routeIs('monitoring.rps') ? 'active' : '' }}"
                                     href="#navbar-admin" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                     role="button"
                                     aria-expanded="{{ request()->routeIs('users.*') ? 'true' : 'false' }}">
@@ -84,13 +85,21 @@
                                     </span>
                                     <span class="nav-link-title">Users</span>
                                 </a>
-                                <div class="dropdown-menu {{ request()->routeIs('users.*') ? 'show' : '' }}">
+                                <div
+                                    class="dropdown-menu {{ request()->routeIs('users.*') || request()->routeIs('monitoring.rps') ? 'show' : '' }}">
                                     <a class="dropdown-item {{ request()->routeIs('users.*') ? 'active' : '' }}"
                                         href="{{ route('users.index') }}">
                                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                                             <i class="ti ti-users"></i>
                                         </span>
                                         Data Users
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('monitoring.rps') ? 'active' : '' }}"
+                                        href="{{ route('monitoring.rps') }}">
+                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <i class="ti ti-file-analytics"></i>
+                                        </span>
+                                        Monitoring RPS
                                     </a>
                                 </div>
                             </li>
@@ -116,11 +125,37 @@
                                     </a>
                                 </div>
                             </li>
+
+                            <li class="nav-item dropdown {{ request()->routeIs('settings') ? 'show' : '' }}">
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('settings') ? 'active' : '' }}"
+                                    href="#navbar-settings" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                                    role="button"
+                                    aria-expanded="{{ request()->routeIs('settings') ? 'true' : 'false' }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-settings"></i>
+                                    </span>
+                                    <span class="nav-link-title">Setting</span>
+                                </a>
+                                <div class="dropdown-menu {{ request()->routeIs('settings') ? 'show' : '' }}">
+                                    <a class="dropdown-item" href="{{ route('settings') }}">
+                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <i class="ti ti-brand-instagram"></i>
+                                        </span>
+                                        Website Setup
+                                    </a>
+                                    {{-- <a class="dropdown-item" href="{{ route('settings') }}">
+                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <i class="ti ti-photo"></i>
+                                        </span>
+                                        Logo Login
+                                    </a> --}}
+                                </div>
+                            </li>
                         @endif
 
                         @if (Auth::user()->usertype == 'mahasiswa')
                             <li class="nav-item dropdown {{ request()->routeIs('mahasiswa.*') ? 'show' : '' }}">
-                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('mahasiswa.*') ? 'active' : '' }}"
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('mahasiswa.*') || request()->routeIs('rps.*') ? 'active' : '' }}"
                                     href="#navbar-mahasiswa" data-bs-toggle="dropdown" data-bs-auto-close="false"
                                     role="button"
                                     aria-expanded="{{ request()->routeIs('mahasiswa.*') ? 'true' : 'false' }}">
@@ -129,7 +164,8 @@
                                     </span>
                                     <span class="nav-link-title">Mahasiswa</span>
                                 </a>
-                                <div class="dropdown-menu {{ request()->routeIs('mahasiswa.*') ? 'show' : '' }}">
+                                <div
+                                    class="dropdown-menu {{ request()->routeIs('mahasiswa.*') || request()->routeIs('rps.*') ? 'show' : '' }}">
                                     <a class="dropdown-item {{ request()->routeIs('mahasiswa.create') ? 'active' : '' }}"
                                         href="{{ route('mahasiswa.create') }}">
                                         <i class="ti ti-plus me-1"></i>
@@ -145,13 +181,23 @@
                                         <i class="ti ti-book me-1"></i>
                                         Materi Perkuliahan
                                     </a>
+                                    <a class="dropdown-item {{ request()->routeIs('mahasiswa.krs.index') ? 'active' : '' }}"
+                                        href="{{ route('mahasiswa.krs.index') }}">
+                                        <i class="ti ti-file-text me-1"></i>
+                                        Kartu Rencana Studi (KRS)
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('rps.index') ? 'active' : '' }}"
+                                        href="{{ route('rps.index') }}">
+                                        <i class="ti ti-file-text me-1"></i>
+                                        Download RPS
+                                    </a>
                                 </div>
                             </li>
                         @endif
 
                         @if (Auth::user()->usertype == 'dosen')
                             <li class="nav-item dropdown {{ request()->routeIs('dosen.*') ? 'show' : '' }}">
-                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('dosen.*') ? 'active' : '' }}"
+                                <a class="nav-link dropdown-toggle nav-link-custom text-white {{ request()->routeIs('dosen.*') || request()->routeIs('rps.*') ? 'active' : '' }}"
                                     href="#navbar-dosen" data-bs-toggle="dropdown" data-bs-auto-close="false"
                                     role="button"
                                     aria-expanded="{{ request()->routeIs('dosen.*') ? 'true' : 'false' }}">
@@ -160,7 +206,8 @@
                                     </span>
                                     <span class="nav-link-title">Dosen</span>
                                 </a>
-                                <div class="dropdown-menu {{ request()->routeIs('dosen.*') ? 'show' : '' }}">
+                                <div
+                                    class="dropdown-menu {{ request()->routeIs('dosen.*') || request()->routeIs('rps.*') ? 'show' : '' }}">
                                     <a class="dropdown-item {{ request()->routeIs('dosen.index') ? 'active' : '' }}"
                                         href="{{ route('dosen.index') }}">
                                         <i class="ti ti-list me-1"></i>
@@ -170,6 +217,16 @@
                                         href="{{ route('dosen.create') }}">
                                         <i class="ti ti-upload me-1"></i>
                                         Upload RPS Mata Kuliah
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('dosen.monitoring.krs') ? 'active' : '' }}"
+                                        href="{{ route('dosen.monitoring.krs') }}">
+                                        <i class="ti ti-eye me-1"></i>
+                                        Monitoring KRS Mahasiswa
+                                    </a>
+                                    <a class="dropdown-item {{ request()->routeIs('rps.index') ? 'active' : '' }}"
+                                        href="{{ route('rps.index') }}">
+                                        <i class="ti ti-file-text me-1"></i>
+                                        Rencana Program Semester (RPS)
                                     </a>
                                 </div>
                             </li>
@@ -413,10 +470,11 @@
 
             // Delete confirmation with SweetAlert
             document.addEventListener('click', function(e) {
-                if (e.target && e.target.classList.contains('delete-confirm')) {
+                const deleteBtn = e.target.closest('.delete-confirm');
+                if (deleteBtn) {
                     e.preventDefault();
-                    const form = e.target.closest('form');
-                    const name = e.target.dataset.name || 'item';
+                    const form = deleteBtn.closest('form');
+                    const name = deleteBtn.dataset.name || 'item';
 
                     Swal.fire({
                         title: 'Konfirmasi',

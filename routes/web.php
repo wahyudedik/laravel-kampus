@@ -81,6 +81,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('pembayaran-mahasiswa', PembayaranMahasiswaController::class);
 
     // route untuk mahasiswa
+    // Route untuk KRS Mahasiswa (must be before resource route)
+    Route::get('mahasiswa/krs', [\App\Http\Controllers\KrsMahasiswaController::class, 'index'])->name('mahasiswa.krs.index');
+    Route::post('mahasiswa/krs', [\App\Http\Controllers\KrsMahasiswaController::class, 'store'])->name('mahasiswa.krs.store');
+    
     Route::resource('mahasiswa', MahasiswaController::class);
     Route::get('mahasiswa-materi', [MahasiswaMateriController::class, 'index'])
         ->name('mahasiswa.materi.index');
@@ -98,6 +102,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // route untuk admin setting
     Route::get('settings', [SettingController::class, 'index'])->name('settings');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // Route untuk RPS
+    Route::resource('rps', \App\Http\Controllers\RpsController::class)->except(['edit', 'update', 'show']);
+    Route::get('rps/{rps}/download', [\App\Http\Controllers\RpsController::class, 'download'])->name('rps.download');
+
+    // Monitoring RPS
+    Route::get('monitoring/rps', [\App\Http\Controllers\MonitoringRpsController::class, 'index'])->name('monitoring.rps');
+
+    // Route untuk Monitoring KRS Dosen
+    Route::get('dosen/monitoring/krs', [\App\Http\Controllers\MonitoringKrsDosenController::class, 'index'])->name('dosen.monitoring.krs');
+    Route::get('dosen/monitoring/krs/{id}/download', [\App\Http\Controllers\MonitoringKrsDosenController::class, 'download'])->name('dosen.monitoring.krs.download');
 });
 
 require __DIR__ . '/auth.php';

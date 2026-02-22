@@ -34,9 +34,12 @@ class DosenController extends Controller
             'nama_perangkat_ajar' => 'required',
             'mata_kuliah' => 'required',
             'semester' => 'required',
-            'tahun_ajaran' => 'required',
+            'tahun_ajaran_mulai' => 'required|numeric|digits:4',
+            'tahun_ajaran_selesai' => 'required|numeric|digits:4|gt:tahun_ajaran_mulai',
             'file_perangkat_ajar' => 'required|mimes:pdf|max:2048',
         ]);
+
+        $tahun_ajaran = $request->tahun_ajaran_mulai . '/' . $request->tahun_ajaran_selesai;
 
         if ($request->hasFile('file_perangkat_ajar')) {
             $file = $request->file('file_perangkat_ajar');
@@ -49,7 +52,7 @@ class DosenController extends Controller
             'nama_perangkat_ajar' => $request->nama_perangkat_ajar,
             'mata_kuliah' => $request->mata_kuliah,
             'semester' => $request->semester,
-            'tahun_ajaran' => $request->tahun_ajaran,
+            'tahun_ajaran' => $tahun_ajaran,
             'file_perangkat_ajar' => $filename,
         ]);
 
@@ -88,8 +91,11 @@ class DosenController extends Controller
             'nama_perangkat_ajar' => 'required',
             'mata_kuliah' => 'required',
             'semester' => 'required',
-            'tahun_ajaran' => 'required',
+            'tahun_ajaran_mulai' => 'required|numeric|digits:4',
+            'tahun_ajaran_selesai' => 'required|numeric|digits:4|gt:tahun_ajaran_mulai',
         ]);
+
+        $tahun_ajaran = $request->tahun_ajaran_mulai . '/' . $request->tahun_ajaran_selesai;
 
         if ($request->hasFile('file_perangkat_ajar')) {
             $request->validate([
@@ -116,7 +122,7 @@ class DosenController extends Controller
         $perangkatAjar->nama_perangkat_ajar = $request->nama_perangkat_ajar;
         $perangkatAjar->mata_kuliah = $request->mata_kuliah;
         $perangkatAjar->semester = $request->semester;
-        $perangkatAjar->tahun_ajaran = $request->tahun_ajaran;
+        $perangkatAjar->tahun_ajaran = $tahun_ajaran;
         $perangkatAjar->save();
 
         return redirect()->route('dosen.index')

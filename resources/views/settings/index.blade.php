@@ -92,18 +92,86 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div> 
+                    </div>
                 </div>
-                
+
                 <!-- Add the new city field -->
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label class="form-label">Kota</label>
-                            <input type="text" class="form-control @error('kota') is-invalid @enderror"
-                                name="kota" value="{{ $settings->kota ?? '' }}">
+                            <input type="text" class="form-control @error('kota') is-invalid @enderror" name="kota"
+                                value="{{ $settings->kota ?? '' }}">
                             <small class="form-hint">Nama kota untuk dokumen dan laporan</small>
                             @error('kota')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hr-text">Social Media (Login Page Bottom)</div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label">IG Icon 1</label>
+                            <div class="mb-2">
+                                @if (isset($settings->ig_1))
+                                    <img src="{{ asset('storage/' . $settings->ig_1) }}" alt="IG 1"
+                                        class="img-thumbnail" style="max-height: 40px;">
+                                @else
+                                    <span class="text-muted">No icon</span>
+                                @endif
+                            </div>
+                            <input type="file" class="form-control mb-2" name="ig_1" accept="image/*">
+                            <input type="text" class="form-control" name="link_ig_1" placeholder="Label/Link IG 1"
+                                value="{{ $settings->link_ig_1 ?? '' }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label">IG Icon 2</label>
+                            <div class="mb-2">
+                                @if (isset($settings->ig_2))
+                                    <img src="{{ asset('storage/' . $settings->ig_2) }}" alt="IG 2"
+                                        class="img-thumbnail" style="max-height: 40px;">
+                                @else
+                                    <span class="text-muted">No icon</span>
+                                @endif
+                            </div>
+                            <input type="file" class="form-control mb-2" name="ig_2" accept="image/*">
+                            <input type="text" class="form-control" name="link_ig_2" placeholder="Label/Link IG 2"
+                                value="{{ $settings->link_ig_2 ?? '' }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Website Icon</label>
+                            <div class="mb-2">
+                                @if (isset($settings->logo_website))
+                                    <img src="{{ asset('storage/' . $settings->logo_website) }}" alt="Website"
+                                        class="img-thumbnail" style="max-height: 40px;">
+                                @else
+                                    <span class="text-muted">No icon</span>
+                                @endif
+                            </div>
+                            <input type="file" class="form-control mb-2" name="logo_website" accept="image/*">
+                            <input type="text" class="form-control" name="link_website"
+                                placeholder="Label/Link Website" value="{{ $settings->link_website ?? '' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hr-text">KRS Settings</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Batas Akhir Upload KRS</label>
+                            <input type="datetime-local" class="form-control @error('krs_deadline') is-invalid @enderror" 
+                                name="krs_deadline" 
+                                value="{{ $settings->krs_deadline ? \Carbon\Carbon::parse($settings->krs_deadline)->format('Y-m-d\TH:i') : '' }}">
+                            <small class="form-hint">Tentukan batas waktu mahasiswa untuk upload KRS</small>
+                            @error('krs_deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -112,7 +180,8 @@
             </form>
         </div>
         <div class="card-footer text-end">
-            <button type="button" class="btn btn-primary no-submit-handling" onclick="document.getElementById('settings-form').submit()">
+            <button type="button" class="btn btn-primary no-submit-handling"
+                onclick="document.getElementById('settings-form').submit()">
                 <i class="ti ti-device-floppy"></i> Save Changes
             </button>
         </div>
