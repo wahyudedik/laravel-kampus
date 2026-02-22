@@ -169,7 +169,7 @@
                             <label class="form-label">Batas Akhir Upload KRS</label>
                             <input type="datetime-local" class="form-control @error('krs_deadline') is-invalid @enderror" 
                                 name="krs_deadline" 
-                                value="{{ $settings->krs_deadline ? \Carbon\Carbon::parse($settings->krs_deadline)->format('Y-m-d\TH:i') : '' }}">
+                                value="{{ $settings && $settings->krs_deadline ? \Carbon\Carbon::parse($settings->krs_deadline)->format('Y-m-d\TH:i') : '' }}">
                             <small class="form-hint">Tentukan batas waktu mahasiswa untuk upload KRS</small>
                             @error('krs_deadline')
                                 <div class="invalid-feedback">{{ $message }}</div>
