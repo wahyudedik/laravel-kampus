@@ -25,7 +25,7 @@
             <div class="flex justify-center mb-6">
                 <a href="/">
                     @if(isset($settings->icon_login))
-                        <img src="{{ asset('storage/'.$settings->icon_login) }}" class="h-25 w-auto object-contain">
+                        <img src="{{ asset('storage/'.$settings->icon_login) }}" class="h-15 w-30 object-contain">
                     @else
                         <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
                     @endif
